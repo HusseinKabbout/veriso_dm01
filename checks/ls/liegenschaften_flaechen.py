@@ -24,23 +24,30 @@ class ComplexCheck(ComplexCheckBase):
         self.root = QgsProject.instance().layerTreeRoot()
 
     def run(self):
-        self.settings = QSettings("CatAIS","VeriSO")
+        self.settings = QSettings("CatAIS", "VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-
-        locale = QSettings().value('locale/userLocale')[0:2] # Für Multilingual-Legenden.
+        # Für Multilingual-Legenden.
+        locale = QSettings().value('locale/userLocale')[0:2]
 
         if not project_id:
-            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_liegenschaften_flaechen", "project_id not set", None), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error",
+                _translate("VeriSO_EE_liegenschaften_flaechen",
+                           "project_id not set", None),
+                level=Qgis.Critical, duration=5)
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
-            group = _translate("VeriSO_EE_liegenschaften_flaechen", u"Flächendifferenzen", None)
+            group = _translate("VeriSO_EE_liegenschaften_flaechen",
+                               u"Flächendifferenzen", None)
             group += " (" + str(project_id) + ")"
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_liegenschaften_flaechen",u"Liegenschaften mit Flächendifferenzen", None)
+            layer["title"] = _translate(
+                "VeriSO_EE_liegenschaften_flaechen",
+                u"Liegenschaften mit Flächendifferenzen", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_liegenschaft_flaeche"
             layer["geom"] = "geometrie"
@@ -54,7 +61,9 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_liegenschaften_flaechen","Selbstrecht mit Flaechendifferenzen", None)
+            layer["title"] = _translate("VeriSO_EE_liegenschaften_flaechen",
+                                        "Selbstrecht mit Flaechendifferenzen",
+                                        None)
             layer["readonly"] = True
             layer["featuretype"] = "z_selbstrecht_flaeche"
             layer["geom"] = "geometrie"
@@ -68,7 +77,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_liegenschaften_flaechen","GRUDIS-LS-Aufruf", None)
+            layer["title"] = _translate("VeriSO_EE_liegenschaften_flaechen",
+                                        "GRUDIS-LS-Aufruf", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_liegenschaft_v2"
             layer["geom"] = "geometrie"
@@ -78,7 +88,6 @@ class ComplexCheck(ComplexCheckBase):
             layer["style"] = "liegenschaften/grudis.qml"
 #            layer["style"] = "gebaeudeadressen/lokalisationsnamepos_newlabel_"+_locale+".qml"
             vlayerGRUDIS = self.layer_loader.load(layer)
-
 
 #            LS = vlayerLS.featureCount()
 #           TS3 = vlayer3.featureCount()
@@ -95,10 +104,10 @@ class ComplexCheck(ComplexCheckBase):
         except Exception:
             QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error", str(traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical, duration=5)
         QApplication.restoreOverrideCursor()
-
-
 
 #        eingangOhneLokalisation = vlayerEingangOhneLokalisation.featureCount()
 #        lokalisationsNameOhneEingang = vlayerLokalisationsNameOhneEingang.featureCount()

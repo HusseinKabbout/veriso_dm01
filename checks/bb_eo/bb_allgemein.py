@@ -24,14 +24,18 @@ class ComplexCheck(ComplexCheckBase):
         self.root = QgsProject.instance().layerTreeRoot()
 
     def run(self):
-        self.settings = QSettings("CatAIS","VeriSO")
+        self.settings = QSettings("CatAIS", "VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-
-        locale = QSettings().value('locale/userLocale')[0:2] # Für Multilingual-Legenden.
+        # Für Multilingual-Legenden.
+        locale = QSettings().value('locale/userLocale')[0:2]
 
         if not project_id:
-            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_BB_allgemein", "project_id not set", None), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error",
+                _translate("VeriSO_EE_BB_allgemein",
+                           "project_id not set", None),
+                level=Qgis.Critical, duration=5)
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -40,7 +44,8 @@ class ComplexCheck(ComplexCheckBase):
             group += " (" + str(project_id) + ")"
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] =  _translate("VeriSO_EE_BB_allgemein", "Liegenschaften", None)
+            layer["title"] = _translate("VeriSO_EE_BB_allgemein",
+                                        "Liegenschaften", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_liegenschaft"
             layer["geom"] = "geometrie"
@@ -51,7 +56,8 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer, False, True)
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] =  _translate("VeriSO_EE_BB_allgemein", "Bodenbedeckung", None)
+            layer["title"] = _translate("VeriSO_EE_BB_allgemein",
+                                        "Bodenbedeckung", None)
             layer["readonly"] = True
             layer["featuretype"] = "bodenbedeckung_boflaeche"
             layer["geom"] = "geometrie"
@@ -62,7 +68,8 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] =  _translate("VeriSO_EE_BB_allgemein", "Objektname", None)
+            layer["title"] = _translate("VeriSO_EE_BB_allgemein",
+                                        "Objektname", None)
             layer["readonly"] = True
             layer["featuretype"] = "bodenbedeckung_objektnamepos_v"
             layer["geom"] = "pos"
@@ -74,7 +81,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] =  _translate("VeriSO_EE_BB_allgemein", "BEGID (BB)", None)
+            layer["title"] = _translate("VeriSO_EE_BB_allgemein",
+                                        "BEGID (BB)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_gebaeudenummer_pos"
             layer["key"] = "ogc_fid"
@@ -86,7 +94,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] =  _translate("VeriSO_EE_BB_allgemein", "BB Symbole", None)
+            layer["title"] = _translate("VeriSO_EE_BB_allgemein",
+                                        "BB Symbole", None)
             layer["readonly"] = True
             layer["featuretype"] = "t_bb_sym"
             layer["key"] = "ogc_fid"
@@ -97,7 +106,9 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer, False, True)
 
         except Exception:
-          QApplication.restoreOverrideCursor()
-          exc_type, exc_value, exc_traceback = sys.exc_info()
-          self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
-        QApplication.restoreOverrideCursor()
+            QApplication.restoreOverrideCursor()
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            self.iface.messageBar().pushMessage(
+                "Error", str(traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical, duration=5)
+            QApplication.restoreOverrideCursor()

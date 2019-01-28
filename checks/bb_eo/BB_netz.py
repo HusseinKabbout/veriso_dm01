@@ -24,14 +24,17 @@ class ComplexCheck(ComplexCheckBase):
         self.root = QgsProject.instance().layerTreeRoot()
 
     def run(self):
-        self.settings = QSettings("CatAIS","VeriSO")
+        self.settings = QSettings("CatAIS", "VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-
-        locale = QSettings().value('locale/userLocale')[0:2] # Für Multilingual-Legenden.
+        # Für Multilingual-Legenden
+        locale = QSettings().value('locale/userLocale')[0:2]
 
         if not project_id:
-            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_BB_netz", "project_id not set", None), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error", _translate("VeriSO_EE_BB_netz",
+                                    "project_id not set", None),
+                level=Qgis.Critical, duration=5)
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -41,7 +44,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_BB_netz", "Gewässernetz (BB)", None)
+            layer["title"] = _translate("VeriSO_EE_BB_netz",
+                                        "Gewässernetz (BB)", None)
             layer["readonly"] = True
             layer["featuretype"] = "bodenbedeckung_boflaeche"
             layer["geom"] = "geometrie"
@@ -53,7 +57,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_BB_netz", "Verkehrsnetz (BB)", None)
+            layer["title"] = _translate("VeriSO_EE_BB_netz",
+                                        "Verkehrsnetz (BB)", None)
             layer["readonly"] = True
             layer["featuretype"] = "bodenbedeckung_boflaeche"
             layer["geom"] = "geometrie"
@@ -65,7 +70,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_BB_netz", "EO-Flächenelemente (Netz)", None)
+            layer["title"] = _translate("VeriSO_EE_BB_netz",
+                                        "EO-Flächenelemente (Netz)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_eo_flaeche"
             layer["geom"] = "geometrie"
@@ -77,7 +83,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_BB_netz", "EO-Linienelemente (Netz)", None)
+            layer["title"] = _translate("VeriSO_EE_BB_netz",
+                                        "EO-Linienelemente (Netz)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_eo_linie"
             layer["geom"] = "geometrie"
@@ -99,7 +106,8 @@ class ComplexCheck(ComplexCheckBase):
             layer["style"] = "bodenbedeckung/eo_punk.qml"
             vlayer = self.layer_loader.load(layer, False, True)
 
-            layer["title"] = _translate("VeriSO_EE_BB_netz", "Hochspannungsfreileitung", None)
+            layer["title"] = _translate("VeriSO_EE_BB_netz",
+                                        "Hochspannungsfreileitung", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_eo_linie"
             layer["geom"] = "geometrie"
@@ -112,5 +120,7 @@ class ComplexCheck(ComplexCheckBase):
         except Exception:
             QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error", str(traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical, duration=5)
         QApplication.restoreOverrideCursor()

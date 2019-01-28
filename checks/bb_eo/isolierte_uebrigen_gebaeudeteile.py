@@ -5,7 +5,7 @@ import sys
 import traceback
 from qgis.PyQt.QtCore import QSettings, Qt
 from qgis.PyQt.QtWidgets import QApplication
-from qgis.core import QgsProject
+from qgis.core import QgsProject, Qgis
 
 from veriso.base.utils.loadlayer import LoadLayer
 from veriso.modules.complexcheck_base import ComplexCheckBase
@@ -35,8 +35,8 @@ class ComplexCheck(ComplexCheckBase):
 
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-
-        locale = QSettings().value('locale/userLocale')[0:2]  # this is for multilingual legends
+        # this is for multilingual legends
+        locale = QSettings().value('locale/userLocale')[0:2]
 
         # If locale is different to frence or italian, german will be used.
         # Otherwise we get into troubles with the legends, e.g. locale = "en"
@@ -50,41 +50,50 @@ class ComplexCheck(ComplexCheckBase):
             locale = "de"
 
         if not project_id:
-            self.message_bar.pushCritical("Error", _translate("Isolierte Uebrigen Gebaeudeteile", "project_id not set", None))
+            self.message_bar.pushCritical("Error", _translate(
+                "Isolierte Uebrigen Gebaeudeteile", "project_id not set",
+                None))
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
-            group = _translate("Veribe", "Isolierte_Uebrigen_Gebaeudeteile", None)
+            group = _translate("Veribe", "Isolierte_Uebrigen_Gebaeudeteile",
+                               None)
             group += " (" + str(project_id) + ")"
 
             layer = {
                 "type": "postgres",
-                "title": _translate("Veribe", "Isolierte Uebrigen Gebaeudeteile Flachen", None),
+                "title": _translate("Veribe",
+                                    "Isolierte Uebrigen Gebaeudeteile Flachen",
+                                    None),
                 "featuretype": "v_uebriger_gebaeudeteil_isolierte_flaeche",
                 "geom": "geometrie", "key": "ogc_fid", "sql": "",
                 "readonly": True, "group": group,
-            }
+                }
 
             vlayer = self.layer_loader.load(layer)
 
             layer = {
                 "type": "postgres",
-                "title": _translate("Veribe", "Isolierte Uebrigen Gebaeudeteile Linien", None),
+                "title": _translate("Veribe",
+                                    "Isolierte Uebrigen Gebaeudeteile Linien",
+                                    None),
                 "featuretype": "v_uebriger_gebaeudeteil_isolierte_linien",
                 "geom": "geometrie", "key": "ogc_fid", "sql": "",
                 "readonly": True, "group": group,
-            }
+                }
 
             vlayer = self.layer_loader.load(layer)
 
             layer = {
                 "type": "postgres",
-                "title": _translate("Veribe", "Isolierte Uebrigen Gebaeudeteile Punkte", None),
+                "title": _translate("Veribe",
+                                    "Isolierte Uebrigen Gebaeudeteile Punkte",
+                                    None),
                 "featuretype": "v_uebriger_gebaeudeteil_isolierte_punkte",
                 "geom": "geometrie", "key": "ogc_fid", "sql": "",
                 "readonly": True, "group": group,
-            }
+                }
 
             vlayer = self.layer_loader.load(layer)
 
@@ -93,13 +102,13 @@ class ComplexCheck(ComplexCheckBase):
             # method:
             # load(layer, visibility=True, collapsed_legend=False,
             # collapsed_group=False)
-            #vlayer = self.layer_loader.load(layer)
+            # vlayer = self.layer_loader.load(layer)
 
         except Exception:
             QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
             self.message_bar.pushMessage("Error", str(
-                    traceback.format_exc(exc_traceback)),
-                                         level=Qgis.Critical,
-                                         duration=0)
+                traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical,
+                duration=0)
         QApplication.restoreOverrideCursor()

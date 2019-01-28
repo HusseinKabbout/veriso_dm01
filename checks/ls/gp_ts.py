@@ -24,14 +24,17 @@ class ComplexCheck(ComplexCheckBase):
         self.root = QgsProject.instance().layerTreeRoot()
 
     def run(self):
-        self.settings = QSettings("CatAIS","VeriSO")
+        self.settings = QSettings("CatAIS", "VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-
-        locale = QSettings().value('locale/userLocale')[0:2] # Für Multilingual-Legenden.
+        # Für Multilingual-Legenden.
+        locale = QSettings().value('locale/userLocale')[0:2]
 
         if not project_id:
-            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_gp_ts", "project_id not set", None), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error",
+                _translate("VeriSO_EE_gp_ts", "project_id not set",
+                           None), level=Qgis.Critical, duration=5)
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -40,7 +43,8 @@ class ComplexCheck(ComplexCheckBase):
             group += " (" + str(project_id) + ")"
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "GP unversichert", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "GP unversichert", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_grenzpunkt"
             layer["geom"] = "geometrie"
@@ -53,7 +57,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "GP nicht exakt definiert", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "GP nicht exakt definiert", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_grenzpunkt"
             layer["geom"] = "geometrie"
@@ -66,7 +71,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "GP Zuverlaessigkeit", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "GP Zuverlaessigkeit", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_grenzpunkt"
             layer["geom"] = "geometrie"
@@ -77,7 +83,8 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
 
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "GP zuv", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "GP zuv", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_grenzpunkt"
             layer["geom"] = "geometrie"
@@ -90,7 +97,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "GP Genauigkeit", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "GP Genauigkeit", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_grenzpunkt"
             layer["geom"] = "geometrie"
@@ -103,7 +111,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "SDR Qualitaet", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "SDR Qualitaet", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_selbstrecht"
             layer["geom"] = "geometrie"
@@ -115,7 +124,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "Liegenschaften Qualitaet", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "Liegenschaften Qualitaet", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_liegenschaft"
             layer["geom"] = "geometrie"
@@ -127,7 +137,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "proj SDR Qualitaet", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "proj SDR Qualitaet", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_projselbstrecht"
             layer["geom"] = "geometrie"
@@ -139,7 +150,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "proj Liegenschaften Qualitaet", None)
+            layer["title"] = _translate("VeriSO_EE_gp_ts",
+                                        "proj Liegenschaften Qualitaet", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_projliegenschaft"
             layer["geom"] = "geometrie"
@@ -149,10 +161,11 @@ class ComplexCheck(ComplexCheckBase):
             layer["style"] = "liegenschaften/q_proj_ls.qml"
             vlayerprojLS = self.layer_loader.load(layer)
 
-
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_gp_ts", "GP-Genauigkeiten schlechter AV93-Qalitaet", None)
+            layer["title"] = _translate(
+                "VeriSO_EE_gp_ts",
+                "GP-Genauigkeiten schlechter AV93-Qalitaet", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_v_gp_ts"
             layer["geom"] = "geometrie"
@@ -164,21 +177,21 @@ class ComplexCheck(ComplexCheckBase):
 
             GP = vlayerGP.featureCount()
 
-
-            QMessageBox.information( None, "Statistique points limites", "<b>Statistik Grenzpunkte:</b> <br>"
-                                    + "<table>"
-+ "<tr> <td>Anzahl GP's/ Nombre PL: </td> <td>" + str(genGP) +  "</td> </tr>"
-
-                                    + "<tr> <td>Genauigkeit / précision < AV93 / MO93: </td> <td>" + str(GP) +  "</td> </tr>"
-+ "<tr> <td>unzuverlaessige GP's / PL fiabilité insuffisante: </td> <td>" + str(unzuv) +  "</td> </tr>"
-                                    + "<tr> <td>unversicherte GP's / PL non matérialisés: </td> <td>" + str(unvGP) +  "</td> </tr>"
-+ "<tr> <td>GP nicht exakt definiert / PL pas défini exactement : </td> <td>" + str(unex) +  "</td> </tr>"
-                           + "</table>")
-
-
+            QMessageBox.information(
+                None, "Statistique points limites",
+                "<b>Statistik Grenzpunkte:</b> <br>"
+                + "<table>"
+                + "<tr> <td>Anzahl GP's/ Nombre PL: </td> <td>" + str(genGP) + "</td> </tr>"
+                + "<tr> <td>Genauigkeit / précision < AV93 / MO93: </td> <td>" + str(GP) +  "</td> </tr>"
+                + "<tr> <td>unzuverlaessige GP's / PL fiabilité insuffisante: </td> <td>" + str(unzuv) +  "</td> </tr>"
+                + "<tr> <td>unversicherte GP's / PL non matérialisés: </td> <td>" + str(unvGP) +  "</td> </tr>"
+                + "<tr> <td>GP nicht exakt definiert / PL pas défini exactement : </td> <td>" + str(unex) +  "</td> </tr>"
+                + "</table>")
 
         except Exception:
             QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error", str(traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical, duration=5)
         QApplication.restoreOverrideCursor()

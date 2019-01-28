@@ -24,14 +24,17 @@ class ComplexCheck(ComplexCheckBase):
         self.root = QgsProject.instance().layerTreeRoot()
 
     def run(self):
-        self.settings = QSettings("CatAIS","VeriSO")
+        self.settings = QSettings("CatAIS", "VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-
-        locale = QSettings().value('locale/userLocale')[0:2] # Für Multilingual-Legenden.
+        # Für Multilingual-Legenden.
+        locale = QSettings().value('locale/userLocale')[0:2]
 
         if not project_id:
-            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_wmsBBEO", "project_id not set", None), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error",
+                _translate("VeriSO_EE_wmsBBEO", "project_id not set",
+                           None), level=Qgis.Critical, duration=5)
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -42,33 +45,37 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "wms"
             layer["group"] = group
-            layer["title"] = _translate("VeriSO_EE_wmsBBEO", "gesch. geol. Objekte", None)
-            layer["url"] ="http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_geologiewms_d_fk_s/MapServer/WMSServer?"
-            layer["layers"] ="GEODB.GGO_GGOP"
-            layer["format"] ="image/png"
-            #layer["crs"] ="EPSG:21781"
+            layer["title"] = _translate(
+                "VeriSO_EE_wmsBBEO", "gesch. geol. Objekte", None)
+            layer["url"] = "http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_geologiewms_d_fk_s/MapServer/WMSServer?"
+            layer["layers"] = "GEODB.GGO_GGOP"
+            layer["format"] = "image/png"
+            # layer["crs"] ="EPSG:21781"
             layer["sql"] = ""
             layer["style"] = ""
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "wms"
             layer["group"] = group
-            layer["title"] = _translate("VeriSO_EE_wmsBBEO", "Lawinienverb.", None)
-            layer["url"] ="http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_umweltwms_d_fk_s/MapServer/WMSServer?"
-            layer["layers"] ="GEODB.SCHBLAW_SBLAWP,GEODB.SCHBLAW_SBLAW"
-            layer["format"] ="image/png"
-            #layer["crs"] ="EPSG:21781"
+            layer["title"] = _translate("VeriSO_EE_wmsBBEO", "Lawinienverb.",
+                                        None)
+            layer["url"] = "http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_umweltwms_d_fk_s/MapServer/WMSServer?"
+            layer["layers"] = "GEODB.SCHBLAW_SBLAWP,GEODB.SCHBLAW_SBLAW"
+            layer["format"] = "image/png"
+            # layer["crs"] ="EPSG:21781"
             layer["sql"] = ""
             layer["style"] = ""
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "wms"
             layer["group"] = group
-            layer["title"] = _translate("VeriSO_EE_wmsBBEO", "GBO (geschuetzte botanische...)", None)
-            layer["url"] ="http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_umweltwms_d_fk_s/MapServer/WMSServer?"
+            layer["title"] = _translate("VeriSO_EE_wmsBBEO",
+                                        "GBO (geschuetzte botanische...)",
+                                        None)
+            layer["url"] = "http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_umweltwms_d_fk_s/MapServer/WMSServer?"
             layer["layers"] ="GEODB.GBO_GBOP,GEODB.GBO_GBOF"
             layer["format"] ="image/png"
-            #layer["crs"] ="EPSG:21781"
+            # layer["crs"] ="EPSG:21781"
             layer["sql"] = ""
             layer["style"] = ""
             vlayer = self.layer_loader.load(layer)
@@ -76,21 +83,22 @@ class ComplexCheck(ComplexCheckBase):
             layer["type"] = "wms"
             layer["group"] = group
             layer["title"] = _translate("VeriSO_EE_wmsBBEO", "GN5", None)
-            layer["url"] ="http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_gewaesserwms_d_fk_s/MapServer/WMSServer?"
-            layer["layers"] ="GEODB.GN5_GN5ROUTE_B,GEODB.GN5_DOLUNG,GEODB.GN5_GN5ROUTE"
-            layer["format"] ="image/png"
-            #layer["crs"] ="EPSG:21781"
+            layer["url"] = "http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_gewaesserwms_d_fk_s/MapServer/WMSServer?"
+            layer["layers"] = "GEODB.GN5_GN5ROUTE_B,GEODB.GN5_DOLUNG,GEODB.GN5_GN5ROUTE"
+            layer["format"] = "image/png"
+            # layer["crs"] ="EPSG:21781"
             layer["sql"] = ""
             layer["style"] = ""
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "wms"
             layer["group"] = group
-            layer["title"] = _translate("VeriSO_EE_wmsBBEO", "Wanderwege", None)
-            layer["url"] ="http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_transportwms_d_fk_s/MapServer/WMSServer?"
-            layer["layers"] ="GEODB.WANDERNS_WEGE"
-            layer["format"] ="image/png"
-            #layer["crs"] ="EPSG:21781"
+            layer["title"] = _translate("VeriSO_EE_wmsBBEO", "Wanderwege",
+                                        None)
+            layer["url"] = "http://www.geoservice.apps.be.ch/geoservice/services/a4p/a4p_transportwms_d_fk_s/MapServer/WMSServer?"
+            layer["layers"] = "GEODB.WANDERNS_WEGE"
+            layer["format"] = "image/png"
+            # layer["crs"] ="EPSG:21781"
             layer["sql"] = ""
             layer["style"] = ""
             vlayer = self.layer_loader.load(layer)
@@ -98,5 +106,7 @@ class ComplexCheck(ComplexCheckBase):
         except Exception:
             QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error", str(traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical, duration=5)
         QApplication.restoreOverrideCursor()

@@ -27,8 +27,8 @@ class ComplexCheck(ComplexCheckBase):
         self.settings = QSettings("CatAIS", "VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-
-        locale = QSettings().value('locale/userLocale')[0:2]  # Für Multilingual-Legenden.
+        # Für Multilingual-Legenden.
+        locale = QSettings().value('locale/userLocale')[0:2]
 
         if not project_id:
             self.iface.messageBar().pushMessage(
@@ -50,7 +50,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","EO Flaechenelemete",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "EO Flaechenelemete", None)
             layer["readonly"] = True
             layer["featuretype"] = "einzelobjekte_flaechenelement_v"
             layer["geom"] = "geometrie"
@@ -61,7 +62,8 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","EO Linienelemente",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "EO Linienelemente", None)
             layer["readonly"] = True
             layer["featuretype"] = "einzelobjekte_linienelement_v"
             layer["geom"] = "geometrie"
@@ -72,7 +74,8 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","EO Punktelemente",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "EO Punktelemente", None)
             layer["readonly"] = True
             layer["featuretype"] = "einzelobjekte_punktelement_v"
             layer["geom"] = "geometrie"
@@ -83,7 +86,8 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","Objektname",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "Objektname", None)
             layer["readonly"] = True
             layer["featuretype"] = "einzelobjekte_objektnamepos_v"
             layer["geom"] = "pos"
@@ -93,12 +97,11 @@ class ComplexCheck(ComplexCheckBase):
             layer["style"] = "bodenbedeckung/objektnamen.qml"
             vlayer = self.layer_loader.load(layer, False, True)
 
-
-
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_basis","SDR",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "SDR", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_selbstrecht"
             layer["geom"] = "geometrie"
@@ -110,9 +113,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-
-
-            layer["title"] = _translate("VeriSO_EE_basis","Liegenschaften",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "Liegenschaften", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_liegenschaft"
             layer["geom"] = "geometrie"
@@ -124,7 +126,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_basis","Hilfslinie",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "Hilfslinie", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_grundstueckpos"
             layer["geom"] = "hilfslinie"
@@ -134,7 +137,8 @@ class ComplexCheck(ComplexCheckBase):
             layer["style"] = "liegenschaften/hilfslinie.qml"
             vlayer = self.layer_loader.load(layer, False, True)
 
-            layer["title"] = _translate("VeriSO_EE_basis","proj. Liegenschaften",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "proj. Liegenschaften", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_projliegenschaft"
             layer["geom"] = "geometrie"
@@ -144,8 +148,8 @@ class ComplexCheck(ComplexCheckBase):
             layer["style"] = "liegenschaften/projliegenschaft.qml"
             vlayer = self.layer_loader.load(layer)
 
-
-            layer["title"] = _translate("VeriSO_EE_basis","proj. SDR",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "proj. SDR", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_projselbstrecht"
             layer["geom"] = "geometrie"
@@ -161,7 +165,9 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_basis","proj_Grst-Nr",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "proj_Grst-Nr",
+                                        None)
             layer["readonly"] = True
             layer["featuretype"] = "z_projgs_nr"
             layer["geom"] = "pos"
@@ -173,7 +179,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_basis","Nr Gs(LS)",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "Nr Gs(LS)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_nr_gs"
             layer["geom"] = "pos"
@@ -185,7 +192,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_basis","Nr Gs(SDR)",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "Nr Gs(SDR)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_nr_gs"
             layer["geom"] = "pos"
@@ -197,7 +205,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_basis","Nr Gs(LS-Teil)",None)
+            layer["title"] = _translate("VeriSO_EE_basis", "Nr Gs(LS-Teil)",
+                                        None)
             layer["readonly"] = True
             layer["featuretype"] = "z_nr_gs"
             layer["geom"] = "pos"
@@ -209,7 +218,8 @@ class ComplexCheck(ComplexCheckBase):
 
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","Nr Gs(SDR Teil)",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "Nr Gs(SDR Teil)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_nr_gs"
             layer["geom"] = "pos"
@@ -219,14 +229,10 @@ class ComplexCheck(ComplexCheckBase):
             layer["style"] = "liegenschaften/nr_sdr_teil.qml"
             vlayer = self.layer_loader.load(layer)
 
-
-
-
-
-
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","proj. Gebaeude",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "proj. Gebaeude", None)
             layer["readonly"] = True
             layer["featuretype"] = "bodenbedeckung_projboflaeche"
             layer["geom"] = "geometrie"
@@ -237,7 +243,8 @@ class ComplexCheck(ComplexCheckBase):
             vlayerprojGeb = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","HausnummerPos",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "HausnummerPos", None)
             layer["featuretype"] = "v_gebaeudeadressen_hausnummerpos"
             layer["geom"] = "pos"
             layer["key"] = "ogc_fid"
@@ -247,7 +254,8 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","Bodenbedeckung",None)
+            layer["title"] = _translate("VeriSO_EE_basis",
+                                        "Bodenbedeckung", None)
             layer["readonly"] = True
             layer["featuretype"] = "bodenbedeckung_boflaeche"
             layer["geom"] = "geometrie"
@@ -258,7 +266,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
-            layer["title"] = _translate("VeriSO_EE_basis","Objektname",None)
+            layer["title"] = _translate("VeriSO_EE_basis", "Objektname", None)
             layer["readonly"] = True
             layer["featuretype"] = "bodenbedeckung_objektnamepos_v"
             layer["geom"] = "pos"
@@ -268,18 +276,10 @@ class ComplexCheck(ComplexCheckBase):
             layer["style"] = "bodenbedeckung/objektnamen.qml"
             vlayer = self.layer_loader.load(layer, False, True)
 
-
-
-
-
-
-
-
-
-
-
         except Exception:
             QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error", str(traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical, duration=5)
         QApplication.restoreOverrideCursor()

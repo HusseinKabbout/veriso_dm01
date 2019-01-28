@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtGui import *
 from qgis.PyQt.QtWidgets import *
@@ -25,36 +25,57 @@ class ComplexCheck(ComplexCheckBase):
         self.root = QgsProject.instance().layerTreeRoot()
 
     def run(self):
-        self.settings = QSettings("CatAIS","VeriSO")
+        self.settings = QSettings("CatAIS", "VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
 
         locale = QSettings().value('locale/userLocale')[0:2]
 
         if not project_id:
-            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_gebaeudeadressen_lokalisation", "project_id not set", None), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error",
+                _translate("VeriSO_EE_gebaeudeadressen_lokalisation",
+                           "project_id not set", None), level=Qgis.Critical,
+                duration=5)
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
-            group = _translate("VeriSO_EE_gebaeudeadressen_lokalisation", "Gebaeudeadressen - Lokalisationstest", None)
+            group = _translate("VeriSO_EE_gebaeudeadressen_lokalisation",
+                               "Gebaeudeadressen - Lokalisationstest", None)
             group += " (" + str(project_id) + ")"
 
             # Layernamen hier definieren:
-            lokalisation = _translate("VeriSO_EE_Geb_LokTest", "Lokalisation Lokalisationstest", None)
-            strassenstueck_geometrie = _translate("VeriSO_EE_Geb_LokTest", "Strassenstueck (geometrie) Lokalisationstest", None)
-            strassenstueck_anfangspunkt = _translate("VeriSO_EE_Geb_LokTest", "Strassenstueck (anfangspunkt) Lokalisationstest", None)
-            benanntesgebiet = _translate("VeriSO_EE_Geb_LokTest", "Benanntes Gebiet Lokalisationstest", None)
-            gebaeudeeingang = _translate("VeriSO_EE_Geb_LokTest", "Gebaeudeeingang Lokalisationstest", None)
-            shortestline = _translate("VeriSO_EE_Geb_LokTest", "Kuerzeste Linie Lokalisationstest", None)
-            hausnummerpos = _translate("VeriSO_EE_Geb_LokTest", "HausnummerPos Lokalisationstest", None)
-            lokalisationsname = _translate("VeriSO_EE_Geb_LokTest", "LokalisationsName", None)
+            lokalisation = _translate("VeriSO_EE_Geb_LokTest",
+                                      "Lokalisation Lokalisationstest", None)
+            strassenstueck_geometrie = _translate(
+                "VeriSO_EE_Geb_LokTest",
+                 "Strassenstueck (geometrie) Lokalisationstest", None)
+            strassenstueck_anfangspunkt = _translate(
+                "VeriSO_EE_Geb_LokTest",
+                "Strassenstueck (anfangspunkt) Lokalisationstest", None)
+            benanntesgebiet = _translate("VeriSO_EE_Geb_LokTest",
+                                         "Benanntes Gebiet Lokalisationstest",
+                                         None)
+            gebaeudeeingang = _translate("VeriSO_EE_Geb_LokTest",
+                                         "Gebaeudeeingang Lokalisationstest",
+                                         None)
+            shortestline = _translate("VeriSO_EE_Geb_LokTest",
+                                      "Kuerzeste Linie Lokalisationstest",
+                                      None)
+            hausnummerpos = _translate("VeriSO_EE_Geb_LokTest",
+                                       "HausnummerPos Lokalisationstest",
+                                       None)
+            lokalisationsname = _translate("VeriSO_EE_Geb_LokTest",
+                                           "LokalisationsName", None)
 
             vlayer_lokalisation = self.getVectorLayerByName(lokalisation)
             if not vlayer_lokalisation:
                 layer = {}
                 layer["type"] = "postgres"
-                layer["title"] = _translate("VeriSO_EE_gebaeudeadressen_lokalisation","Lokalisation", None)
+                layer["title"] = _translate(
+                    "VeriSO_EE_gebaeudeadressen_lokalisation", "Lokalisation",
+                    None)
                 layer["featuretype"] = "gebaeudeadressen_lokalisation"
                 layer["key"] = "ogc_fid"
                 layer["sql"] = "tid = '-1'"
@@ -62,11 +83,14 @@ class ComplexCheck(ComplexCheckBase):
                 layer["group"] = group
                 vlayer_lokalisation = self.layer_loader.load(layer)
 
-            vlayer_strassenstueck_geometrie = self.getVectorLayerByName(strassenstueck_geometrie)
+            vlayer_strassenstueck_geometrie = self.getVectorLayerByName(
+                strassenstueck_geometrie)
             if not vlayer_strassenstueck_geometrie:
                 layer = {}
                 layer["type"] = "postgres"
-                layer["title"] = _translate("VeriSO_EE_gebaeudeadressen_lokalisation","Strassenstueck (geometrie) Lokalisationstest", None)
+                layer["title"] = _translate(
+                    "VeriSO_EE_gebaeudeadressen_lokalisation",
+                    "Strassenstueck (geometrie) Lokalisationstest", None)
                 layer["featuretype"] = "gebaeudeadressen_strassenstueck"
                 layer["geom"] = "geometrie"
                 layer["key"] = "ogc_fid"
@@ -76,11 +100,14 @@ class ComplexCheck(ComplexCheckBase):
                 layer["style"] = "gebaeudeadressen/strassenachsen_rot.qml"
                 vlayer_strassenstueck_geometrie = self.layer_loader.load(layer)
 
-            vlayer_strassenstueck_anfangspunkt = self.getVectorLayerByName(strassenstueck_anfangspunkt)
+            vlayer_strassenstueck_anfangspunkt = self.getVectorLayerByName(
+                strassenstueck_anfangspunkt)
             if not vlayer_strassenstueck_anfangspunkt:
                 layer = {}
                 layer["type"] = "postgres"
-                layer["title"] = _translate("VeriSO_EE_gebaeudeadressen_lokalisation","Strassenstueck (anfangspunkt) Lokalisationstest", None)
+                layer["title"] = _translate(
+                    "VeriSO_EE_gebaeudeadressen_lokalisation",
+                    "Strassenstueck (anfangspunkt) Lokalisationstest", None)
                 layer["featuretype"] = "gebaeudeadressen_strassenstueck"
                 layer["geom"] = "anfangspunkt"
                 layer["key"] = "ogc_fid"
@@ -88,13 +115,16 @@ class ComplexCheck(ComplexCheckBase):
                 layer["readonly"] = True
                 layer["group"] = group
                 layer["style"] = "gebaeudeadressen/anfangspunkt_rot.qml"
-                vlayer_strassenstueck_anfangspunkt = self.layer_loader.load(layer)
+                vlayer_strassenstueck_anfangspunkt = self.layer_loader.load(
+                    layer)
 
             vlayer_benanntesgebiet = self.getVectorLayerByName(benanntesgebiet)
             if not vlayer_benanntesgebiet:
                 layer = {}
                 layer["type"] = "postgres"
-                layer["title"] = _translate("VeriSO_EE_gebaeudeadressen_lokalisation","Benanntes Gebiet Lokalisationstest", None)
+                layer["title"] = _translate(
+                    "VeriSO_EE_gebaeudeadressen_lokalisation",
+                    "Benanntes Gebiet Lokalisationstest", None)
                 layer["featuretype"] = "gebaeudeadressen_benanntesgebiet"
                 layer["geom"] = "flaeche"
                 layer["key"] = "ogc_fid"
@@ -108,7 +138,9 @@ class ComplexCheck(ComplexCheckBase):
             if not vlayer_gebaeudeeingang:
                 layer = {}
                 layer["type"] = "postgres"
-                layer["title"] = _translate("VeriSO_EE_gebaeudeadressen_lokalisation","Gebaeudeeingang Lokalisationstest", None)
+                layer["title"] = _translate(
+                    "VeriSO_EE_gebaeudeadressen_lokalisation",
+                    "Gebaeudeeingang Lokalisationstest", None)
                 layer["featuretype"] = "gebaeudeadressen_gebaeudeeingang"
                 layer["geom"] = "lage"
                 layer["key"] = "ogc_fid"
@@ -122,7 +154,9 @@ class ComplexCheck(ComplexCheckBase):
             if not vlayer_shortestline:
                 layer = {}
                 layer["type"] = "postgres"
-                layer["title"] = _translate("VeriSO_EE_gebaeudeadressen_lokalisation","Kuerzeste Linie Lokalisationstest", None)
+                layer["title"] = _translate(
+                    "VeriSO_EE_gebaeudeadressen_lokalisation",
+                    "Kuerzeste Linie Lokalisationstest", None)
                 layer["featuretype"] = "t_shortestline_hausnummerpos"
                 layer["geom"] = "the_geom"
                 layer["key"] = "ogc_fid"
@@ -136,7 +170,9 @@ class ComplexCheck(ComplexCheckBase):
             if not vlayer_hausnummerpos:
                 layer = {}
                 layer["type"] = "postgres"
-                layer["title"] = _translate("VeriSO_EE_gebaeudeadressen_lokalisation","HausnummerPos Lokalisationstest", None)
+                layer["title"] = _translate(
+                    "VeriSO_EE_gebaeudeadressen_lokalisation",
+                    "HausnummerPos Lokalisationstest", None)
                 layer["featuretype"] = "v_gebaeudeadressen_hausnummerpos"
                 layer["geom"] = "pos"
                 layer["key"] = "ogc_fid"
@@ -146,9 +182,14 @@ class ComplexCheck(ComplexCheckBase):
                 layer["style"] = "gebaeudeadressen/hausnummerpos_rot.qml"
                 vlayer_hausnummerpos = self.layer_loader.load(layer)
 
-            vlayer_lokalisationsname = self.getVectorLayerByName(lokalisationsname)
+            vlayer_lokalisationsname = self.getVectorLayerByName(
+                lokalisationsname)
             if not vlayer_lokalisationsname:
-                self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_Geb_LokTest", "Layer _LokalisationsName_ not found.", None), level=Qgis.Critical, duration=10)
+                self.iface.messageBar().pushMessage(
+                    "Error",
+                    _translate("VeriSO_EE_Geb_LokTest",
+                               "Layer _LokalisationsName_ not found.", None),
+                    level=Qgis.Critical, duration=10)
                 QApplication.restoreOverrideCursor()
                 return
 
@@ -159,12 +200,20 @@ class ComplexCheck(ComplexCheckBase):
                 ids.append(feature.id())
 
             if vlayer_lokalisationsname.selectedFeatureCount() < 1:
-                self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_Geb_LokTest", "No _LokalisationsName_ selected.", None), level=Qgis.Warning, duration=10)
+                self.iface.messageBar().pushMessage(
+                    "Error", _translate("VeriSO_EE_Geb_LokTest",
+                                        "No _LokalisationsName_ selected.",
+                                        None), level=Qgis.Warning, duration=10)
                 QApplication.restoreOverrideCursor()
                 return
 
             if vlayer_lokalisationsname.selectedFeatureCount() > 1:
-                self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_Geb_LokTest", "Please select only one (1) _LokalisationsName_.", None), level=Qgis.Warning, duration=10)
+                self.iface.messageBar().pushMessage(
+                    "Error",
+                    _translate(
+                        "VeriSO_EE_Geb_LokTest",
+                        "Please select only one (1) _LokalisationsName_.",
+                        None), level=Qgis.Warning, duration=10)
                 QApplication.restoreOverrideCursor()
                 return
 
@@ -177,20 +226,30 @@ class ComplexCheck(ComplexCheckBase):
             text_idx = vlayer_lokalisationsname.fieldNameIndex("text")
 
             if benannte_idx == -1 or text_idx == -1:
-                self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_Geb_LokTest", "Field _benannte_ or _text_ not found.", None), level=Qgis.Critical, duration=10)
+                self.iface.messageBar().pushMessage(
+                    "Error", _translate("VeriSO_EE_Geb_LokTest",
+                                        "Field _benannte_ or _text_ not found.",
+                                        None), level=Qgis.Critical,
+                    duration=10)
                 QApplication.restoreOverrideCursor()
                 return
 
-            benannte =  feat.attributes()[benannte_idx]
+            benannte = feat.attributes()[benannte_idx]
             lokalisationsname = feat.attributes()[text_idx]
 
-            vlayer_strassenstueck_geometrie.setSubsetString("(strassenstueck_von = '"+benannte+"')")
-            vlayer_strassenstueck_anfangspunkt.setSubsetString("(strassenstueck_von = '"+benannte+"')")
-            vlayer_benanntesgebiet.setSubsetString("(benanntesgebiet_von = '"+benannte+"')")
-            vlayer_gebaeudeeingang.setSubsetString("(gebaeudeeingang_von = '"+benannte+"')")
-            vlayer_lokalisation.setSubsetString("(tid = '"+benannte+"')")
-            vlayer_shortestline.setSubsetString("(lok_tid = '"+benannte+"')")
-            vlayer_hausnummerpos.setSubsetString("(lok_tid = '"+benannte+"')")
+            vlayer_strassenstueck_geometrie.setSubsetString(
+                "(strassenstueck_von = '" + benannte + "')")
+            vlayer_strassenstueck_anfangspunkt.setSubsetString(
+                "(strassenstueck_von = '" + benannte + "')")
+            vlayer_benanntesgebiet.setSubsetString(
+                "(benanntesgebiet_von = '" + benannte + "')")
+            vlayer_gebaeudeeingang.setSubsetString(
+                "(gebaeudeeingang_von = '" + benannte + "')")
+            vlayer_lokalisation.setSubsetString("(tid = '" + benannte + "')")
+            vlayer_shortestline.setSubsetString(
+                "(lok_tid = '" + benannte + "')")
+            vlayer_hausnummerpos.setSubsetString(
+                "(lok_tid = '" + benannte + "')")
 
             if vlayer_strassenstueck_geometrie.featureCount() > 0:
                 xMin = vlayer_strassenstueck_geometrie.extent().xMinimum()
@@ -215,12 +274,13 @@ class ComplexCheck(ComplexCheckBase):
                     if vlayer_gebaeudeeingang.extent().yMaximum() > yMax:
                         yMax = vlayer_gebaeudeeingang.extent().yMaximum()
 
-                rect = QgsRectangle(xMin,  yMin,  xMax,  yMax)
+                rect = QgsRectangle(xMin, yMin, xMax, yMax)
                 rect.scale(1.3)
 
-            except UnboundLocalError, e:
-                vlayer_gemeindegrenze = self.getVectorLayerByName("Gemeindegrenze")
-                if vlayer_gemeindegrenze == None:
+            except UnboundLocalError as e:
+                vlayer_gemeindegrenze = self.getVectorLayerByName(
+                    "Gemeindegrenze")
+                if vlayer_gemeindegrenze is None:
                     rect = self.canvas.fullExtent()
                 else:
                     rect = vlayer_gemeindegrenze.extent()
@@ -232,20 +292,28 @@ class ComplexCheck(ComplexCheckBase):
 
             # only one feature is selected
             for feature in iter:
-                prinzip_idx = vlayer_lokalisation.fieldNameIndex("nummerierungsprinzip_txt")
-                attributeprovisorisch_idx = vlayer_lokalisation.fieldNameIndex("attributeprovisorisch_txt")
-                offiziell_idx = vlayer_lokalisation.fieldNameIndex("istoffiziellebezeichnung_txt")
+                prinzip_idx = vlayer_lokalisation.fieldNameIndex(
+                    "nummerierungsprinzip_txt")
+                attributeprovisorisch_idx = vlayer_lokalisation.fieldNameIndex(
+                    "attributeprovisorisch_txt")
+                offiziell_idx = vlayer_lokalisation.fieldNameIndex(
+                    "istoffiziellebezeichnung_txt")
                 status_idx = vlayer_lokalisation.fieldNameIndex("status_txt")
-                inaenderung_idx = vlayer_lokalisation.fieldNameIndex("inaenderung_txt")
+                inaenderung_idx = vlayer_lokalisation.fieldNameIndex(
+                    "inaenderung_txt")
                 art_idx = vlayer_lokalisation.fieldNameIndex("art_txt")
 
                 if prinzip_idx == -1 or attributeprovisorisch_idx == -1 or offiziell_idx == -1 or status_idx == -1 or inaenderung_idx == -1 or art_idx == -1:
-                    self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_Geb_LokTest", "Field not found.", None), level=Qgis.Critical, duration=10)
+                    self.iface.messageBar().pushMessage(
+                        "Error", _translate("VeriSO_EE_Geb_LokTest",
+                                            "Field not found.", None),
+                        level=Qgis.Critical, duration=10)
                     QApplication.restoreOverrideCursor()
                     return
 
                 prinzip = feature.attributes()[prinzip_idx]
-                attributeprovisorisch = feature.attributes()[attributeprovisorisch_idx]
+                attributeprovisorisch = feature.attributes()[
+                    attributeprovisorisch_idx]
                 offiziell = feature.attributes()[offiziell_idx]
                 status = feature.attributes()[status_idx]
                 inaenderung = feature.attributes()[inaenderung_idx]
@@ -263,46 +331,56 @@ class ComplexCheck(ComplexCheckBase):
                     if str(name) == "LokalisationsInfo":
                         text_item = items[i]
                         text_item_found = True
-                except Exception, e:
+                except Exception as e:
                     pass
 
             if not text_item_found:
                 text_item = QgsTextAnnotationItem(self.canvas)
                 text_item.setData(0, "LokalisationsInfo")
 
-            text_item.setMapPosition(QgsPoint(x+10*self.canvas.mapUnitsPerPixel(), y-10*self.canvas.mapUnitsPerPixel()))
+            text_item.setMapPosition(
+                QgsPoint(x + 10 * self.canvas.mapUnitsPerPixel(),
+                         y - 10 * self.canvas.mapUnitsPerPixel()))
             text_item.setMapPositionFixed(False)
             text_item.setFrameBorderWidth(0.0)
             text_item.setFrameColor(QColor(250, 250, 250, 255))
             text_item.setFrameBackgroundColor(QColor(250, 250, 250, 255))
-            text_item.setFrameSize(QSizeF(250,150))
+            text_item.setFrameSize(QSizeF(250, 150))
             text_document = QTextDocument()
-            text_document.setHtml("<table style='font-size:12px;'><tr><td>Lok.Name: </td><td>"+lokalisationsname+"</td></tr><tr><td>TID: </td><td>"+benannte+"</td></tr> <tr><td>Num.prinzip: </td><td>"+prinzip+"</td></tr> <tr><td>Attr. prov.: </td><td>"+attributeprovisorisch+"</td></tr> <tr><td>ist offiziell: </td><td>"+offiziell+"</td></tr> <tr><td>Status: </td><td>"+status+"</td></tr> <tr><td>in Aenderung: </td><td>"+inaenderung+"</td></tr> <tr><td>Art: </td><td>"+art+"</td></tr>  </table>")
+            text_document.setHtml(
+                "<table style='font-size:12px;'><tr><td>Lok.Name: </td><td>"+lokalisationsname+"</td></tr><tr><td>TID: </td><td>"+benannte+"</td></tr> <tr><td>Num.prinzip: </td><td>"+prinzip+"</td></tr> <tr><td>Attr. prov.: </td><td>"+attributeprovisorisch+"</td></tr> <tr><td>ist offiziell: </td><td>"+offiziell+"</td></tr> <tr><td>Status: </td><td>"+status+"</td></tr> <tr><td>in Aenderung: </td><td>"+inaenderung+"</td></tr> <tr><td>Art: </td><td>"+art+"</td></tr>  </table>")
             text_item.setDocument(text_document)
 
             # Workaround: das erste Mal passt die Position nicht...???
-            text_item.setMapPosition(QgsPoint(x+10*self.canvas.mapUnitsPerPixel(), y-10*self.canvas.mapUnitsPerPixel()))
+            text_item.setMapPosition(QgsPoint(
+                x + 10 * self.canvas.mapUnitsPerPixel(),
+                y - 10 * self.canvas.mapUnitsPerPixel()))
             text_item.update()
 
             self.iface.mapCanvas().refresh()
 
             try:
-                vlayer_lokalisationsname.setSelectedFeatures([ids[idx+1]])
+                vlayer_lokalisationsname.setSelectedFeatures([ids[idx + 1]])
             except IndexError:
-                self.iface.messageBar().pushMessage("Information",  _translate("VeriSO_EE_Geb_LokTest", "End of table.", None), level=Qgis.Info, duration=10)
+                self.iface.messageBar().pushMessage(
+                    "Information",
+                    _translate("VeriSO_EE_Geb_LokTest",
+                               "End of table.", None), level=Qgis.Info,
+                    duration=10)
 
-        except Exception, e:
+        except Exception as e:
             QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error", str(traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical, duration=5)
         QApplication.restoreOverrideCursor()
-
 
     # Return QgsVectorLayer from a layer name ( as string )
     # (c) Carson Farmer / fTools
     def getVectorLayerByName(self, myName):
-        layermap = QgsMapLayerRegistry.instance().mapLayers()
-        for name, layer in layermap.iteritems():
+        layermap = QgsProject.instance().mapLayers()
+        for layer in layermap.values():
             if layer.type() == QgsMapLayer.VectorLayer and layer.name() == myName:
                 if layer.isValid():
                     return layer

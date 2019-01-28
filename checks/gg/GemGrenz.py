@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtGui import *
 from qgis.PyQt.QtWidgets import *
@@ -24,14 +24,18 @@ class ComplexCheck(ComplexCheckBase):
         self.root = QgsProject.instance().layerTreeRoot()
 
     def run(self):
-        self.settings = QSettings("CatAIS","VeriSO")
+        self.settings = QSettings("CatAIS", "VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-
-        locale = QSettings().value('locale/userLocale')[0:2] # Für Multilingual-Legenden.
+        # Für Multilingual-Legenden.
+        locale = QSettings().value('locale/userLocale')[0:2]
 
         if not project_id:
-            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_GemGrenz", "project_id not set", None), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error",
+                _translate("VeriSO_EE_GemGrenz",
+                           "project_id not set", None),
+                level=Qgis.Critical, duration=5)
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -45,20 +49,21 @@ class ComplexCheck(ComplexCheckBase):
             layer["layers"] = "ch.swisstopo.swissboundaries3d-kanton-flaeche.fill"
 #            layer["crs"] = "EPSG:21781"
             layer["format"] = "image/png"
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", "Kantonsgrenze", None)
+            layer["title"] = _translate("VeriSO_EE_GemGrenz",
+                                        "Kantonsgrenze", None)
             layer["group"] = group
             vlayer = self.layer_loader.load(layer, False, True)
 
             layer = {}
             layer["type"] = "wms"
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", "Gemeindegrenzen-swisstopo", None)
-            layer["url"] ="http://wms.geo.admin.ch/?"
-            layer["layers"] ="ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill"
-            layer["format"] ="image/png"
+            layer["title"] = _translate("VeriSO_EE_GemGrenz",
+                                        "Gemeindegrenzen-swisstopo", None)
+            layer["url"] = "http://wms.geo.admin.ch/?"
+            layer["layers"] = "ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill"
+            layer["format"] = "image/png"
             layer["group"] = group
 #            layer["crs"] ="EPSG:21781"
             vlayer = self.layer_loader.load(layer, False, True)
-
 
             layer = {}
             layer["type"] = "postgres"
@@ -75,7 +80,9 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", "Hoheitsgrenzpunkte unversichert", None)
+            layer["title"] = _translate("VeriSO_EE_GemGrenz",
+                                        "Hoheitsgrenzpunkte unversichert",
+                                        None)
             layer["readonly"] = True
             layer["featuretype"] = "gemeindegrenzen_hoheitsgrenzpunkt"
             layer["geom"] = "geometrie"
@@ -87,7 +94,9 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", "Hoheitsgrenzpunkte nicht exakt definiert", None)
+            layer["title"] = _translate(
+                "VeriSO_EE_GemGrenz",
+                "Hoheitsgrenzpunkte nicht exakt definiert", None)
             layer["readonly"] = True
             layer["featuretype"] = "gemeindegrenzen_hoheitsgrenzpunkt"
             layer["geom"] = "geometrie"
@@ -99,7 +108,9 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", "Hoheitsgrenzpunkte (schoener Stein)", None)
+            layer["title"] = _translate(
+                "VeriSO_EE_GemGrenz",
+                "Hoheitsgrenzpunkte (schoener Stein)", None)
             layer["readonly"] = True
             layer["featuretype"] = "gemeindegrenzen_hoheitsgrenzpunkt"
             layer["geom"] = "geometrie"
@@ -111,7 +122,9 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", u"Hoheitsgrenzpunkte Zuverlässigkeit", None)
+            layer["title"] = _translate("VeriSO_EE_GemGrenz",
+                                        u"Hoheitsgrenzpunkte Zuverlässigkeit",
+                                        None)
             layer["readonly"] = True
             layer["featuretype"] = "gemeindegrenzen_hoheitsgrenzpunkt"
             layer["geom"] = "geometrie"
@@ -123,7 +136,9 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", "Hoheitsgrenzpunkte Genauigkeit", None)
+            layer["title"] = _translate("VeriSO_EE_GemGrenz",
+                                        "Hoheitsgrenzpunkte Genauigkeit",
+                                        None)
             layer["readonly"] = True
             layer["featuretype"] = "gemeindegrenzen_hoheitsgrenzpunkt"
             layer["geom"] = "geometrie"
@@ -136,7 +151,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", "proj. Gemeindegrenze", None)
+            layer["title"] = _translate("VeriSO_EE_GemGrenz",
+                                        "proj. Gemeindegrenze", None)
             layer["readonly"] = True
             layer["featuretype"] = "gemeindegrenzen_projgemeindegrenze"
             layer["geom"] = "geometrie"
@@ -149,7 +165,8 @@ class ComplexCheck(ComplexCheckBase):
             layer = {}
             layer["type"] = "postgres"
 
-            layer["title"] = _translate("VeriSO_EE_GemGrenz", "Liegenschaften", None)
+            layer["title"] = _translate("VeriSO_EE_GemGrenz",
+                                        "Liegenschaften", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_liegenschaft"
             layer["geom"] = "geometrie"
@@ -162,5 +179,7 @@ class ComplexCheck(ComplexCheckBase):
         except Exception:
             QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
+            self.iface.messageBar().pushMessage(
+                "Error", str(traceback.format_exc(exc_traceback)),
+                level=Qgis.Critical, duration=5)
         QApplication.restoreOverrideCursor()
