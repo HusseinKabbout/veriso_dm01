@@ -1,29 +1,18 @@
 # coding=utf-8
-from __future__ import print_function
 from collections import OrderedDict
 
 import sys
 import traceback
-from builtins import range, str
-from qgis.PyQt.QtCore import QObject, QSettings, QSizeF, Qt
-from qgis.PyQt.QtGui import QColor, QTextDocument
+from qgis.PyQt.QtCore import QSettings, Qt
 from qgis.PyQt.QtWidgets import QApplication
-from qgis.core import QgsFeature, QgsMapLayer, QgsMapLayerRegistry, QgsPoint, \
-    QgsProject, QgsRectangle
-from qgis.gui import QgsMessageBar, QgsTextAnnotationItem
-from qgis.core import QgsDataSourceURI, QgsVectorLayer
+from qgis.core import QgsProject
 
 from veriso.base.utils.loadlayer import LoadLayer
 from veriso.modules.complexcheck_base import ComplexCheckBase
 
-try:
-    _encoding = QApplication.UnicodeUTF8
 
-    def _translate(context, text, disambig):
-        return QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QApplication.translate(context, text, disambig)
+def _translate(context, text, disambig):
+    return QApplication.translate(context, text, disambig)
 
 
 class ComplexCheck(ComplexCheckBase):
@@ -111,6 +100,6 @@ class ComplexCheck(ComplexCheckBase):
             exc_type, exc_value, exc_traceback = sys.exc_info()
             self.message_bar.pushMessage("Error", str(
                     traceback.format_exc(exc_traceback)),
-                                         level=QgsMessageBar.CRITICAL,
+                                         level=Qgis.Critical,
                                          duration=0)
         QApplication.restoreOverrideCursor()

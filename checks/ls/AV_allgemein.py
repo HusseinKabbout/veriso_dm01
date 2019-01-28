@@ -1,22 +1,18 @@
  # -*- coding: utf-8 -*-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 from qgis.core import *
 from qgis.gui import *
 
 import sys
 import traceback
 
-
-try:
-    _encoding = QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QApplication.translate(context, text, disambig)
-
 from veriso.modules.complexcheck_base import ComplexCheckBase
+
+
+def _translate(context, text, disambig):
+    return QApplication.translate(context, text, disambig)
 
 
 class ComplexCheck(ComplexCheckBase):
@@ -24,24 +20,24 @@ class ComplexCheck(ComplexCheckBase):
     def __init__(self, iface):
         super(ComplexCheck, self).__init__(iface)
         self.iface = iface
-        
-        self.root = QgsProject.instance().layerTreeRoot()        
 
-    def run(self):        
+        self.root = QgsProject.instance().layerTreeRoot()
+
+    def run(self):
         self.settings = QSettings("CatAIS","VeriSO")
         project_id = self.settings.value("project/id")
         epsg = self.settings.value("project/epsg")
-        
+
         locale = QSettings().value('locale/userLocale')[0:2] # Für Multilingual-Legenden.
 
         if not project_id:
-            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_AV allgemein", "project_id not set", None), level=QgsMessageBar.CRITICAL, duration=5)                                
+            self.iface.messageBar().pushMessage("Error",  _translate("VeriSO_EE_AV allgemein", "project_id not set", None), level=Qgis.Critical, duration=5)
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             group = _translate("VeriSO_EE_AV allgemein", "AV Allgemein", None)
-            group += " (" + str(project_id) + ")" 
+            group += " (" + str(project_id) + ")"
             layer = {}
             layer["type"] = "postgres"
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Toleranzstufen", None)
@@ -55,7 +51,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer, False, True)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Grundstuecke", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_grundstueck"
@@ -65,7 +61,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer, False, True)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "proj. SDR", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_projselbstrecht"
@@ -77,7 +73,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "SDR", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_selbstrecht"
@@ -89,7 +85,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "proj. Liegenschaften", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_projliegenschaft"
@@ -101,7 +97,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Liegenschaften", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_liegenschaft"
@@ -113,7 +109,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Hilfslinie", None)
             layer["readonly"] = True
             layer["featuretype"] = "liegenschaften_grundstueckpos"
@@ -123,12 +119,12 @@ class ComplexCheck(ComplexCheckBase):
             layer["sql"] = ""
             layer["style"] = "liegenschaften/hilfslinie.qml"
             vlayer = self.layer_loader.load(layer, False, True)
- 
- 
- 
+
+
+
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "proj_Grst-Nr", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_projgs_nr"
@@ -140,7 +136,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer, False, True)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Nr Gs(LS)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_nr_gs"
@@ -152,7 +148,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer, False, True)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Nr Gs(SDR)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_nr_gs"
@@ -164,7 +160,7 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer, False, True)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Nr Gs(LS-Teil)", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_nr_gs"
@@ -174,7 +170,7 @@ class ComplexCheck(ComplexCheckBase):
             layer["sql"] = "(art=0) and (gesamteflaechenmass>0)"
             layer["style"] = "liegenschaften/nr_ls_teil.qml"
             vlayer = self.layer_loader.load(layer, False, True)
-            
+
             layer = {}
             layer["type"] = "postgres"
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Nr Gs(SDR Teil)", None)
@@ -188,12 +184,12 @@ class ComplexCheck(ComplexCheckBase):
             vlayer = self.layer_loader.load(layer, False, True)
             layer = {}
             layer["type"] = "postgres"
- 
+
             layer["title"] = _translate("VeriSO_EE_AV allgemein", "Label ausserhalb Gs", None)
             layer["readonly"] = True
             layer["featuretype"] = "z_nr_gs"
             layer["geom"] = "pos"
-            layer["group"] = group        
+            layer["group"] = group
             layer["key"] = "ogc_fid"
             layer["sql"] = "lin=1"
             layer["style"] = "liegenschaften/lable_aussen.qml"
@@ -223,10 +219,7 @@ class ComplexCheck(ComplexCheckBase):
 
 
         except Exception:
-            QApplication.restoreOverrideCursor()            
+            QApplication.restoreOverrideCursor()
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=QgsMessageBar.CRITICAL, duration=5)                    
-        QApplication.restoreOverrideCursor()  
-   
-  
-
+            self.iface.messageBar().pushMessage("Error", str(traceback.format_exc(exc_traceback)), level=Qgis.Critical, duration=5)
+        QApplication.restoreOverrideCursor()
